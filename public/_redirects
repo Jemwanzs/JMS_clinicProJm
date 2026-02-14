@@ -1,1 +1,8 @@
-/*    /index.html   200
+# Disable SPA routing during maintenance
+# /* /index.html 200
+
+# Redirect all routes to maintenance page
+/* /maintenance.html 302
+
+# Allow the maintenance page itself to load without redirect
+/maintenance.html 200
