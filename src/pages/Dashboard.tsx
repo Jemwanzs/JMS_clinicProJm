@@ -54,10 +54,10 @@ export default function Dashboard() {
   }, [period, customFrom, customTo]);
 
   const stats = [
-    { label: "Total Patients", value: data.patients.toString(), icon: Users, color: "text-primary", bg: "bg-primary/10", path: "/patients" },
-    { label: "Visits", value: data.visits.toString(), icon: CalendarCheck, color: "text-info", bg: "bg-info/10", path: "/visits" },
-    { label: "Pending Bills", value: data.pendingBills.toString(), icon: Receipt, color: "text-warning", bg: "bg-warning/10", path: "/billing" },
-    { label: "Lab Orders", value: data.labOrders.toString(), icon: FlaskConical, color: "text-success", bg: "bg-success/10", path: "/laboratory" },
+    { label: "Total Patients", value: data.patients.toString(), icon: Users, color: "text-primary", bg: "bg-[#0A444A]", textColor: "text-[#F9FAF5]", path: "/patients" },
+    { label: "Visits", value: data.visits.toString(), icon: CalendarCheck, color: "text-info", bg: "bg-[#155934]", textColor: "text-[#003366]", path: "/visits" },
+    { label: "Pending Bills", value: data.pendingBills.toString(), icon: Receipt, color: "text-warning", bg: "bg-[#520E69]", textColor: "text-[#003366]", path: "/billing" },
+    { label: "Lab Orders", value: data.labOrders.toString(), icon: FlaskConical, color: "text-success", bg: "bg-[#154506]", textColor: "text-[#003366]", path: "/laboratory" },
   ];
 
   return (
@@ -126,7 +126,7 @@ export default function Dashboard() {
           const Icon = stat.icon;
           return (
             <Link key={stat.label} to={stat.path}
-              className="group rounded-xl border border-border bg-card p-3 sm:p-5 stat-card-shadow hover:metric-glow transition-all duration-200"
+              className={`group rounded-xl border border-border ${stat.bg} p-5 sm:p-5 stat-card-shadow hover:metric-glow transition-all duration-200`}
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -159,7 +159,7 @@ export default function Dashboard() {
             ))}
           </div>
           <p className="text-[10px] sm:text-xs text-muted-foreground mt-3 sm:mt-4 pt-2 sm:pt-3 border-t border-border">
-            Activity will appear here once you start using the system.
+            Activity will appear here.
           </p>
         </div>
 
