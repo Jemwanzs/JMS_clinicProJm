@@ -26,10 +26,6 @@ import UsersSettings from "@/pages/settings/UsersSettings";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import NotFound from "@/pages/NotFound";
-import MaintenancePage from "@/pages/MaintenancePage";
-
-const IS_MAINTENANCE = true; // set to false to disable maintenance
-const BYPASS_KEY = localStorage.getItem("dev_access") === "secret123";
 
 const queryClient = new QueryClient();
 
@@ -55,17 +51,8 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
   if (isAuthenticated) return <Navigate to="/" replace />;
   return <>{children}</>;
 }
-
+  
 function AppRoutes() {
-  // 1. Intercept everything if maintenance is active
-  if (IS_MAINTENANCE && !BYPASS_KEY) {
-    return (
-      <Routes>
-        <Route path="*" element={<MaintenancePage />} />
-      </Routes>
-    );
-  }
-   // 2. Your existing routing logic
   return (
     <Routes>
       <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
