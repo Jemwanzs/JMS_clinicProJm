@@ -29,7 +29,7 @@ import NotFound from "@/pages/NotFound";
 import MaintenancePage from "@/pages/MaintenancePage";
 
 // const IS_MAINTENANCE = true; // set to false to disable maintenance
-const IS_MAINTENANCE = false;
+const IS_MAINTENANCE = true;
 const BYPASS_KEY = localStorage.getItem("dev_access") === "secret123";
 
 const queryClient = new QueryClient();
