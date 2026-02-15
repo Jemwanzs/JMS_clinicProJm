@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
@@ -29,30 +29,39 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [currentSlide, setCurrentSlide] = useState(0); // For right-side narration carousel
+
   const branding = getBranding();
   const org = getOrgSettings();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email.trim() || !password.trim()) {
       toast({ title: "Please fill in all fields", variant: "destructive" });
       return;
     }
+
     setLoading(true);
-    const result = await login(email.trim(), password);
-    setLoading(false);
-    if (result.success) navigate("/");
-    else toast({ title: "Login failed", description: result.error, variant: "destructive" });
+    try {
+      const result = await login(email.trim(), password);
+      setLoading(false);
+
+      if (result.success) navigate("/");
+      else toast({ title: "Login failed", description: result.error, variant: "destructive" });
+    } catch (error: any) {
+      setLoading(false);
+      toast({ title: "An error occurred", description: error.message || String(error), variant: "destructive" });
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-white relative">
-      
       {/* Top stripe */}
       <div className="h-1.5 w-full bg-[orange]" />
 
@@ -72,6 +81,7 @@ export default function Login() {
                 width: pos.size,
                 height: "auto",
               }}
+              alt=""
             />
           );
         })}
@@ -82,7 +92,7 @@ export default function Login() {
         {/* LEFT SIDE IMAGE */}
         <div className="hidden lg:flex flex-[0.8] justify-center items-center">
           <img
-            src="/bg/bg3.jpg"   // replace with your own portrait/tall image
+            src="/bg/bg3.jpg"
             alt="Clinic visual"
             className="h-[75vh] w-auto rounded-xl shadow-xl object-cover"
           />
@@ -90,7 +100,6 @@ export default function Login() {
 
         {/* CENTER LOGIN FORM */}
         <div className="w-full max-w-[420px] space-y-6 sm:space-y-8">
-          
           {/* Logo & title */}
           <div className="text-center space-y-3">
             <div className="mx-auto flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/20">
@@ -177,29 +186,137 @@ export default function Login() {
             <span>Secured & encrypted</span>
           </div>
         </div>
+
         {/* RIGHT SIDE NARRATION CARD */}
-        <div className="hidden lg:flex flex-1 justify-start items-center"> {/* left-align column content */}
-          <div className="w-[600px] min-h-[600px] max-h-[1200px] p-6 bg-white rounded-xl shadow-lg border overflow-y-auto">
+        <div className="hidden lg:flex flex-1 justify-start items-center">
+          <div className="w-[600px] min-h-[600px] max-h-[1200px] p-6 bg-white rounded-xl shadow-lg border overflow-hidden flex flex-col">
 
+            <h2 className="text-xl font-bold mb-4 text-[#520E69]">About this System:</h2>
 
-            <h2 className="text-xl font-bold mb-3 text-[#520E69]">About this System:</h2>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Keeping accurate and up-to-date patient records is critical for any modern healthcare facility. 
-              Our Healthcare Management System is designed to provide a complete hospital management solution, enabling your staff 
-              to efficiently track patients, manage appointments, record medical histories, handle pharmacy 
-              dispensing, billing, insurance reconciliation, and generate insightful reports—all from a single, 
-              secure platform.
-              <br /><br />
-              Built by James of <strong>SyncScore</strong>, Sync Clinic is robust, flexible, and scalable, 
-              allowing users to customize features and workflows dynamically to suit their clinic or hospital’s 
-              specific needs. Customizations are available for a small fee, ensuring your system grows with your 
-              facility without compromising efficiency or security.
-            </p>
-            <p className="mt-4 text-xs text-gray-400 italic">
-              *Customizations are available at a small fee.*
-            </p>
+            {/* Carousel container */}
+            <div className="flex-1 relative">
+
+              {/* Slide wrapper */}
+              <div className="overflow-hidden h-full">
+                <div
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
+                  {/* Slide 1 */}
+                  <div className="w-full flex-shrink-0 pr-4">
+                    <h3 className="font-semibold text-gray-700 mb-2">Developer & Contact</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      This Healthcare Management System is designed, built, and developed by <strong>James</strong> (+254798993404) of <strong>SyncScore</strong>, enabling your facility to operate efficiently, securely, and fully customized while providing high-quality patient care.
+                    </p>
+                    <br></br>
+                    <h3 className="font-semibold text-gray-700 mb-2">Overview</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Are you struggling to keep accurate and up-to-date patient records? Modern healthcare facilities require a seamless system to manage both human and animal patients efficiently. This robust, flexible, and scalable Healthcare Management System is designed to centralize your clinic or hospital operations on a single, secure platform.
+                    </p>
+                    <br></br>
+                    <h3 className="font-semibold text-gray-700 mt-4 mb-2">Core Features</h3>
+                    <ul className="list-disc list-inside text-sm text-gray-600 leading-relaxed space-y-1">
+                      <li>Track Patients: Manage human and animal patients in separate modules.</li>
+                      <li>Manage Appointments & Visits: Schedule, record, and review consultations.</li>
+                      <li>Record Vitals & Measurements: Track health indicators with alerts for abnormal values.</li>
+                      <li>Handle Prescriptions & Pharmacy Dispensing.</li>
+                      <li>Laboratory Management: Record tests, store results, flag abnormalities.</li>
+                      <li>Billing & Payments: Issue invoices, track multiple payment modes.</li>
+                      <li>Generate Reports & Analytics: Exportable to PDF or Excel.</li>
+                      <li>Document Management: Upload, attach, and version control documents.</li>
+                      <li>Organization Settings & Branding.</li>
+                      <li>User Roles & Permissions.</li>
+                      <li>Notifications & Reminders.</li>
+                    </ul>
+                  </div>
+
+                  {/* Slide 2 */}
+                  <div className="w-full flex-shrink-0 pr-4">
+                    <h3 className="font-semibold text-gray-700 mb-2">Key Highlights</h3>
+                    <ul className="list-disc list-inside text-sm text-gray-600 leading-relaxed space-y-1">
+                      <li>Fully Dynamic & Configurable.</li>
+                      <li>Kenya-Specific: Includes M-Pesa payment support.</li>
+                      <li>Scalable & Extensible.</li>
+                      <li>Customizable Branding.</li>
+                      <li>Separate Human & Animal Modules.</li>
+                      <li>Developer-Ready: Easy to enhance and integrate.</li>
+                    </ul>
+                    <h3 className="font-semibold text-gray-700 mt-4 mb-2">Sidebar Overview</h3>
+                    <ul className="list-disc list-inside text-sm text-gray-600 leading-relaxed space-y-1">
+                      <li>Dashboard – Overview of activities and metrics.</li>
+                      <li>Patients – Human and animal patient management.</li>
+                      <li>Visits – Record and track consultations.</li>
+                      <li>Vitals – Monitor measurements over time.</li>
+                      <li>Prescriptions – Generate, record, print.</li>
+                      <li>Laboratory – Manage lab tests and results.</li>
+                      <li>Billing – Financial records management.</li>
+                      <li>Reports – Analytics and summaries.</li>
+                      <li>Documents – Upload and manage files.</li>
+                      <li>Assets – Track clinic or hospital assets.</li>
+                      <li>Settings – Organization configuration and branding.</li>
+                      <li>Audit Log – Complete system action trail.</li>
+                    </ul>
+                  </div>
+                  {/* Slide 3 */}
+                  <div className="w-full flex-shrink-0 pr-4">
+                    <h3 className="font-semibold text-gray-700 mb-2">Software Eng.</h3>
+
+                    {/* Text section without bullets */}
+                    <div className="text-sm text-gray-600 leading-relaxed space-y-1 mb-3">
+                      <p>James Sammy</p>
+                      <p>CEO & Founder</p>
+                      <p>Sync Solutions Ltd</p>
+                      <p>+254 798 993 404</p>
+                    </div>
+
+                    {/* Images section */}
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      <img
+                        src="/bg/bg1.jpg" // replace with your actual image path
+                        alt="James Sammy"
+                        className="w-24 h-24 object-cover rounded-md shadow-md"
+                      />
+                      <img
+                        src="/bg/logo1.png"
+                        alt="Company Logo"
+                        className="w-24 h-24 object-cover rounded-md shadow-md"
+                      />
+                      <img
+                        src="/bg/ceo1.jpeg"
+                        alt="Team Image"
+                        className="w-24 h-24 object-cover rounded-md shadow-md"
+                      />
+                      <img
+                        src="/bg/team2.jpeg"
+                        alt="Team Image"
+                        className="w-24 h-24 object-cover rounded-md shadow-md"
+                      />
+                      <img
+                        src="/bg/team1.jpeg"
+                        alt="Team Image"
+                        className="w-24 h-24 object-cover rounded-md shadow-md"
+                      />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              {/* Pagination Buttons */}
+              <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex gap-2">
+                {[0, 1, 2].map((idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setCurrentSlide(idx)}
+                    className={`h-2 w-2 rounded-full ${currentSlide === idx ? "bg-primary" : "bg-gray-300"}`}
+                  />
+                ))}
+              </div>
+
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   );
