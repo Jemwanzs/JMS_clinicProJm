@@ -38,10 +38,9 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      {/* Teal gradient strip at top */}
-      <div className="h-1.5 w-full bg-gradient-to-r from-primary via-primary/70 to-primary/40" />
-
+    <div className="min-h-screen flex flex-col bg-[#15302F] text-white"> {/*Main screen Container)*/}
+      <div className="h-1.5 w-full bg-[orange]"/> {/* Teal gradient strip at top */}
+      
       <div className="flex flex-1 items-center justify-center px-4 py-8 sm:py-12">
         <div className="w-full max-w-[420px] space-y-6 sm:space-y-8">
           {/* Logo & branding */}
@@ -54,7 +53,7 @@ export default function Login() {
               )}
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-muted-foreground mt-1">
                 {org.name || "Sync Clinic"}
               </h1>
               <p className="text-xs sm:text-sm text-muted-foreground mt-1">
@@ -125,7 +124,7 @@ export default function Login() {
           </p>
 
           {/* Footer */}
-          <div className="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground/60">
+          <div className="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground/90">
             <Shield className="h-3 w-3" />
             <span>Secured & encrypted</span>
           </div>

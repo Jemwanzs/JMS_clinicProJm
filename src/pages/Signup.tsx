@@ -54,7 +54,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-[#15302F] text-white"> {/*Main screen Container)*/}
       <div className="h-1.5 w-full bg-gradient-to-r from-primary via-primary/70 to-primary/40" />
 
       <div className="flex flex-1 items-center justify-center px-4 py-8 sm:py-12">
@@ -69,7 +69,7 @@ export default function Signup() {
               )}
             </div>
             <div>
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">Create your clinic</h1>
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-muted-foreground mt-1">Create your clinic</h1>
               <p className="text-xs sm:text-sm text-muted-foreground mt-1">Set up your Sync Clinic account</p>
             </div>
           </div>
@@ -177,7 +177,7 @@ export default function Signup() {
             </Link>
           </p>
 
-          <div className="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground/60">
+          <div className="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground/90">
             <Shield className="h-3 w-3" />
             <span>Your data stays private & secure</span>
           </div>
