@@ -130,14 +130,14 @@ export default function Dashboard() {
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <p className="text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</p>
-                  <p className="text-2xl sm:text-3xl font-bold text-card-foreground mt-1 sm:mt-2">{stat.value}</p>
+                  <p className="text-[10px] sm:text-xs font-medium text-[#fff] uppercase tracking-wide">{stat.label}</p>
+                  <p className="text-[orange] sm:text-3xl font-bold text-card-foreground mt-1 sm:mt-2">{stat.value}</p>
                 </div>
                 <div className={`${stat.bg} ${stat.color} rounded-lg p-1.5 sm:p-2.5`}>
                   <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
               </div>
-              <div className="flex items-center gap-1 mt-2 sm:mt-3 text-[10px] sm:text-xs text-muted-foreground">
+              <div className="flex items-center gap-1 mt-2 sm:mt-3 text-[10px] sm:text-xs text-[#fff]">
                 <span>View details</span>
                 <ArrowRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>

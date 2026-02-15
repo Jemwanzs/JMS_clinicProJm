@@ -9,20 +9,20 @@ import { Stethoscope, Eye, EyeOff, ArrowRight, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { getBranding, getOrgSettings } from "@/lib/store";
 
-// Background scattered images
+// Add the background scattering logic inside your component
 const bgImages = [
-  //"/bg/bg1.jpg",
-  //"/bg/bg2.jpg",
-  //"/bg/bg3.jpg",
-  //"/bg/bg4.jpg",
-  //"/bg/bg5.jpg",
+  "/bg/bg1.jpg",
+  "/bg/bg2.jpg",
+  "/bg/bg3.jpg",
+  "/bg/bg4.jpg",
+  "/bg/bg5.jpg",
 ];
 
 const getRandomPosition = () => ({
   top: `${Math.random() * 80 + 5}%`,
   left: `${Math.random() * 80 + 5}%`,
   rotate: `${Math.random() * 20 - 8}deg`,
-  size: `${Math.random() * 280 + 180}px`,
+  size: `${Math.random() * 280 + 180}px`, // 80px - 200px
 });
 
 export default function Login() {
@@ -46,17 +46,18 @@ export default function Login() {
     setLoading(true);
     const result = await login(email.trim(), password);
     setLoading(false);
-    if (result.success) navigate("/");
-    else toast({ title: "Login failed", description: result.error, variant: "destructive" });
+    if (result.success) {
+      navigate("/");
+    } else {
+      toast({ title: "Login failed", description: result.error, variant: "destructive" });
+    }
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-white relative">
+    <div className="min-h-screen flex flex-col bg-background text-white"> {/*Main screen Container)*/}
+      <div className="h-1.5 w-full bg-[orange]"/> {/* Teal gradient strip at top */}
       
-      {/* Top stripe */}
-      <div className="h-1.5 w-full bg-[orange]" />
-
-      {/* Background scattered images */}
+      {/* Background pale photos */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {bgImages.map((src, i) => {
           const pos = getRandomPosition();
@@ -64,7 +65,7 @@ export default function Login() {
             <img
               key={i}
               src={src}
-              className="absolute opacity-15 object-cover"
+              className="absolute opacity-15 object-cover"  // removed blur
               style={{
                 top: pos.top,
                 left: pos.left,
@@ -76,22 +77,11 @@ export default function Login() {
           );
         })}
       </div>
+      {/* --- */}
 
-      <div className="flex flex-1 items-center justify-center px-4 py-8 sm:py-12 gap-6 lg:gap-8 relative z-10">
-
-        {/* LEFT SIDE IMAGE */}
-        <div className="hidden lg:flex flex-[0.8] justify-center items-center">
-          <img
-            src="/bg/bg3.jpg"   // replace with your own portrait/tall image
-            alt="Clinic visual"
-            className="h-[75vh] w-auto rounded-xl shadow-xl object-cover"
-          />
-        </div>
-
-        {/* CENTER LOGIN FORM */}
+      <div className="flex flex-1 items-center justify-center px-4 py-8 sm:py-12">
         <div className="w-full max-w-[420px] space-y-6 sm:space-y-8">
-          
-          {/* Logo & title */}
+          {/* Logo & branding */}
           <div className="text-center space-y-3">
             <div className="mx-auto flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-primary/10 ring-1 ring-primary/20">
               {branding.logo ? (
@@ -100,7 +90,6 @@ export default function Login() {
                 <Stethoscope className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
               )}
             </div>
-
             <div>
               <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-muted-foreground mt-1">
                 {org.name || "Sync Clinic"}
@@ -112,12 +101,11 @@ export default function Login() {
           </div>
 
           {/* Login form */}
-          <Card className="border-border/60 shadow-lg bg-white/95 backdrop-blur-sm">
+          <Card className="border-border/60 shadow-lg">
             <CardContent className="pt-6 pb-6 px-5 sm:px-6">
               <form onSubmit={handleSubmit} className="space-y-4">
-                
                 <div className="space-y-2">
-                  <Label>Email address</Label>
+                  <Label htmlFor="email" className="text-sm font-medium">Email address</Label>
                   <Input
                     id="email"
                     type="email"
@@ -128,9 +116,8 @@ export default function Login() {
                     className="h-11"
                   />
                 </div>
-
                 <div className="space-y-2">
-                  <Label>Password</Label>
+                  <Label htmlFor="password" className="text-sm font-medium">Password</Label>
                   <div className="relative">
                     <Input
                       id="password"
@@ -150,7 +137,6 @@ export default function Login() {
                     </button>
                   </div>
                 </div>
-
                 <Button type="submit" className="w-full h-11 text-sm font-semibold" disabled={loading}>
                   {loading ? (
                     <span className="flex items-center gap-2">
@@ -158,46 +144,27 @@ export default function Login() {
                       Signing in...
                     </span>
                   ) : (
-                    <span className="flex items-center gap-2">Sign in <ArrowRight className="h-4 w-4" /></span>
+                    <span className="flex items-center gap-2">
+                      Sign in <ArrowRight className="h-4 w-4" />
+                    </span>
                   )}
                 </Button>
               </form>
             </CardContent>
           </Card>
 
+          {/* Sign up link */}
           <p className="text-center text-sm text-muted-foreground">
-            Don’t have an account?{" "}
-            <Link to="/signup" className="font-semibold text-primary hover:text-primary/80">
+            Don't have an account?{" "}
+            <Link to="/signup" className="font-semibold text-primary hover:text-primary/80 transition-colors">
               Create your clinic
             </Link>
           </p>
 
+          {/* Footer */}
           <div className="flex items-center justify-center gap-1.5 text-[11px] text-muted-foreground/90">
             <Shield className="h-3 w-3" />
             <span>Secured & encrypted</span>
-          </div>
-        </div>
-        {/* RIGHT SIDE NARRATION CARD */}
-        <div className="hidden lg:flex flex-1 justify-start items-center"> {/* left-align column content */}
-          <div className="w-[600px] min-h-[600px] max-h-[1200px] p-6 bg-white rounded-xl shadow-lg border overflow-y-auto">
-
-
-            <h2 className="text-xl font-bold mb-3 text-[#520E69]">About this System:</h2>
-            <p className="text-sm text-gray-600 leading-relaxed">
-              Keeping accurate and up-to-date patient records is critical for any modern healthcare facility. 
-              Our Healthcare Management System is designed to provide a complete hospital management solution, enabling your staff 
-              to efficiently track patients, manage appointments, record medical histories, handle pharmacy 
-              dispensing, billing, insurance reconciliation, and generate insightful reports—all from a single, 
-              secure platform.
-              <br /><br />
-              Built by James of <strong>SyncScore</strong>, Sync Clinic is robust, flexible, and scalable, 
-              allowing users to customize features and workflows dynamically to suit their clinic or hospital’s 
-              specific needs. Customizations are available for a small fee, ensuring your system grows with your 
-              facility without compromising efficiency or security.
-            </p>
-            <p className="mt-4 text-xs text-gray-400 italic">
-              *Customizations are available at a small fee.*
-            </p>
           </div>
         </div>
       </div>
